@@ -1,0 +1,71 @@
+=================================================
+chcp
+chcp 65001    # utf-8
+chcp 932      # sjis
+
+=================================================
+$ mix deps.get && mix ecto.setup && mix test
+$ npm --prefix assets install
+    <= cd assets; npm install
+$ mix ecto.reset 
+    <== pgAdmin4 でDBつかんでると失敗するので注意
+$ mix run -e "Sneakers23Mock.Seeds.seed!()"
+    <= seed!()の!が削られてしまう <==関数定義も!を削った
+$ iex -S mix phx.server
+iex(1)> Sneakers23.Inventory.mark_product_released!(1)
+iex(1)> Sneakers23.Inventory.mark_product_released!(2)
+
+Sneakers23Mock.InventoryReducer.sell_random_until_gone!(500)
+
+
+
+$ mix ecto.reset && mix run -e "Sneakers23Mock.Seeds.seed!()"
+$ iex -S mix phx.server
+iex(1)> Sneakers23.Inventory.mark_product_released!(1)
+iex(2)> Sneakers23.Inventory.mark_product_released!(2)
+
+
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
+  end
+
+
+  **** （１）mix ecto.reset &&　（２） mix run -e "Sneakers23Mock.Seeds.seed!()"
+#（１）mix ecto.resetがcmdではうまく動作しない
+#    mix ecto.drop
+#    mix ecto.create
+#    mix ecto.migrate
+#    mix run priv/repo/seeds.exs
+（１）mix ecto.resetはcmdで動作する <=== pgAdmin4 でDBつかんでると失敗するので注意
+（２）seed!()の!が削られてしまう <==関数定義も!を削った
+=================================================
+2020/10/05
+=~
+https://stackoverflow.com/questions/44671445/what-is-operator-in-elixir
+（１）=~ operator works to match regex
+（２）Kernel.=~/2 that when the RHS is a string, =~ checks if LHS contains RHS:
+iex(1)> "foo" =~ "f"
+true
+iex(2)> "foo" =~ "o"
+true
+iex(3)> "foo" =~ "."
+false
+=================================================
+2020/11/05
+Sigils
+https://elixirschool.com/ja/lessons/basics/sigils/
+
+~C エスケープや埋め込みを含まない文字のリストを生成する
+~c エスケープや埋め込みを含む文字のリストを生成する
+~R エスケープや埋め込みを含まない正規表現を生成する
+~r エスケープや埋め込みを含む正規表現を生成する
+~S エスケープや埋め込みを含まない文字列を生成する
+~s エスケープや埋め込みを含む文字列を生成する
+~W エスケープや埋め込みを含まない単語のリストを生成する
+~w エスケープや埋め込みを含む単語のリストを生成する
+~N NaiveDateTime 構造体を生成する
+=================================================

@@ -22,7 +22,7 @@ defmodule Sneakers23Mock.Seeds do
   alias Sneakers23.Repo
   alias Sneakers23.Inventory.{Item, ItemAvailability, Product}
 
-  def seed!() do
+  def seed() do
     Sneakers23.Repo.transaction(fn ->
       products =
         mock_products()
