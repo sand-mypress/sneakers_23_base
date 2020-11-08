@@ -32,16 +32,6 @@ iex(2)> Sneakers23.Inventory.mark_product_released!(2)
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
-
-
-  **** （１）mix ecto.reset &&　（２） mix run -e "Sneakers23Mock.Seeds.seed!()"
-#（１）mix ecto.resetがcmdではうまく動作しない
-#    mix ecto.drop
-#    mix ecto.create
-#    mix ecto.migrate
-#    mix run priv/repo/seeds.exs
-（１）mix ecto.resetはcmdで動作する <=== pgAdmin4 でDBつかんでると失敗するので注意
-（２）seed!()の!が削られてしまう <==関数定義も!を削った
 =================================================
 2020/10/05
 =~
@@ -68,4 +58,73 @@ https://elixirschool.com/ja/lessons/basics/sigils/
 ~W エスケープや埋め込みを含まない単語のリストを生成する
 ~w エスケープや埋め込みを含む単語のリストを生成する
 ~N NaiveDateTime 構造体を生成する
+=================================================
+11/07
+
+Elixir Ecto のまとめ
+https://qiita.com/sand/items/71d0b35d74a4781f3564
+Elixir Ecto チュートリアル
+https://qiita.com/sand/items/0861ad7a16f7ac612f41
+Phoenix1.3の基本的な仕組み
+https://qiita.com/sand/items/f42dc35c47589eab687e
+
+
+=================================================
+★★★DB初期化
+
+★Ecto関連
+mix.exs
+config\dev.exs
+lib\sneakers_23\repo.ex
+
+--- Schema module
+lib\sneakers_23\inventory\product.ex
+lib\sneakers_23\inventory\item.ex
+lib\sneakers_23\inventory\item_availability.ex
+
+--- migrations - Schema table
+priv\repo\migrations\1_create_products.exs
+priv\repo\migrations\2_create_items.exs
+priv\repo\migrations\3_create_item_availabilities.exs
+
+--- context module - wrapper
+lib\sneakers_23\inventory\store.ex
+
+★最後にDBの種まき
+lib\sneakers_23_mock\seeds.ex
+=================================================
+★★★プロセス初期化
+
+mix.exs
+lib\sneakers_23\application.ex
+lib\sneakers_23\inventory.ex
+lib\sneakers_23\inventory\server.ex
+
+=================================================
+★★★Phoenix
+
+★routerモジュール
+lib\sneakers_23_web\router.ex
+
+★controllerモジュール
+lib\sneakers_23_web\controllers\product_controller.ex
+
+★Viewモジュール
+lib\sneakers_23_web\views\product_view.ex
+
+★テンプレート
+lib\sneakers_23_web\templates\product\index.html.eex
+=================================================
+★★★Channel
+
+lib\sneakers_23_web\endpoint.ex
+lib\sneakers_23_web\channels\product_socket.ex
+lib\sneakers_23_web\channels\product_channel.ex
+
+lib\sneakers_23_web.ex
+lib\sneakers_23\inventory.ex
+
+assets\js\app.js
+assets\js\socket.js
+assets\js\dom.js
 =================================================
